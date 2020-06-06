@@ -2,13 +2,13 @@ plugins {
     id "org.openapi.generator" version "4.3.0"
 }
 configurations {
-        openapi {
-            canBeConsumed = false
-            canBeResolved = true
-        }
-    }
+  openapi {
+    canBeConsumed = false
+    canBeResolved = true
+  }
+}
 dependencies {
-    openapi(project(path: ":fastapi-server", configuration: 'openapi'))
+  openapi(project(path: ":fastapi-server", configuration: 'openapi'))
 }
 
 ext {

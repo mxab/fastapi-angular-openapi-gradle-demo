@@ -3,7 +3,7 @@ ext {
     openapiJSONSpec = file("$buildDir/openapi/fastapi-server.spec.json")
 }
 
-tasks.create("exportOpenAPISpec", Exec) {
+tasks.register("exportOpenAPISpec", Exec) {
     commandLine = [
         "poetry",
         "run",
