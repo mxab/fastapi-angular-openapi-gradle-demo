@@ -1,0 +1,39 @@
+
+ext {
+    openapiJSONSpec = file("$buildDir/openapi/fastapi-server.spec.json")
+}
+
+tasks.create("exportOpenAPISpec", Exec) {
+    commandLine = [
+        "poetry",
+        "run",
+        "python", 
+        "-c",
+        """
+        import json
+        import sys
+        from fastapi_server.app import app
+        json.dump(app.openapi(),sys.stdout)
+        """.stripIndent()]
+    
+    openapiJSONSpec.parentFile.mkdirs()//otherwise FileOutputStream throws
+    standardOutput = new FileOutputStream(openapiJSONSpec)
+
+
+    inputs.dir file("fastapi_server")
+    outputs.file openapiJSONSpec
+}
+
+// see https://docs.gradle.org/current/userguide/cross_project_publications.html
+configurations {
+    openapi {
+        canBeConsumed = true
+        canBeResolved = false
+    }
+}
+
+artifacts {
+    openapi(openapiJSONSpec){
+        builtBy(exportOpenAPISpec)
+    }
+}

@@ -1,0 +1,62 @@
+<h1 class="title">Users</h1>
+<div *ngIf="usersState$ | async as usersState; else init">
+
+
+
+
+    <form (ngSubmit)="createUser()" [formGroup]="userFormGroup">
+
+        <div>
+            <label for="email">Email</label>
+            <input id="email" type="email" formControlName="email" placeholder="john@example.com">
+
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input id="password" formControlName="password" type="password">
+        </div>
+        <div>
+            <label for="username">Username</label>
+            <input id="username" formControlName="username" type="text" placeholder="john.doe">
+        </div>
+        <div>
+            <label for="full_name">Full Name</label>
+            <input id="full_name" type="text" formControlName="full_name" placeholder="John Doe">
+        </div>
+
+        <div>
+            <button type="submit">Submit</button>
+            <button type="reset">Cancel</button>
+
+        </div>
+    </form>
+    <div *ngIf="createError" style="color: red;">
+        {{createError}}
+    </div>
+
+    <div *ngIf="usersState.loading">
+        <p>Loading...</p>
+    </div>
+    <div *ngIf="usersState.error; let error">
+        <p style="color: red;">Something went wrong: '{{error}}'</p>
+    </div>
+    <table border="1" *ngIf="usersState.users?.length">
+        <tbody>
+            <tr *ngFor="let user of usersState.users">
+                <td>
+                    {{user.username}}
+                </td>
+                <td>
+                    {{user.email}}
+                </td>
+                <td>
+                    {{user.full_name}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+<ng-template #init>
+    <progress></progress> Initializing...
+</ng-template>

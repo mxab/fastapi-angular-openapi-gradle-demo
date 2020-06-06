@@ -1,0 +1,26 @@
+plugins {
+    id "org.openapi.generator" version "4.3.0"
+}
+configurations {
+        openapi {
+            canBeConsumed = false
+            canBeResolved = true
+        }
+    }
+dependencies {
+    openapi(project(path: ":fastapi-server", configuration: 'openapi'))
+}
+
+ext {
+    generator = "typescript-angular"
+    clientOutputDir = file("$projectDir/src/client")
+}
+openApiGenerate {
+    generatorName = generator
+    outputDir = clientOutputDir.path
+    inputSpec = configurations.openapi.singleFile.path
+}
+tasks.named("openApiGenerate"){
+    inputs.files configurations.openapi
+    outputs.dir clientOutputDir
+}
